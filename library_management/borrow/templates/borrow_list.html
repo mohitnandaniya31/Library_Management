@@ -1,0 +1,48 @@
+{% extends 'base.html' %} {% block title %} |Books {% endblock %} {% block content %}
+<header class="bg-white shadow">
+    <div class="max-w-7xl mx-auto px-4 py-4">
+        <h1 class="text-2xl font-bold">Borrowed Books</h1>
+    </div>
+</header>
+
+<main class="flex-grow p-4">
+    <div class="max-w-7xl mx-auto">
+        <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+            <thead>
+                <tr class="bg-gray-800 text-white">
+                    <th class="py-3 px-4 text-left">Book ID</th>
+                    <th class="py-3 px-4 text-left">Title</th>
+                    <th class="py-3 px-4 text-left">Borrow Date</th>
+                    <th class="py-3 px-4 text-left">Return Date</th>
+                    <th class="py-3 px-4 text-left">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for borrow in borrowed_books %}
+                    <tr class="border-b">
+                        <td class="py-3 px-4">{{ borrow.book.id }}</td>
+                        <td class="py-3 px-4">{{ borrow.book.title }}</td>
+                        <td class="py-3 px-4">{{ borrow.borrow_at|date:"d-m-Y" }}</td>
+                        <td class="py-3 px-4">{{ borrow.return_at|date:"d-m-Y" }}</td>
+                        <td class="py-3 px-4">
+                            {% if borrow.status == 'RETURN' %}
+                                <span class="text-green-500">Returned</span>
+                            {% elif borrow.status == 'REQUEST' %}
+                                <span class="text-yellow-500">Requested</span>
+                            {% elif borrow.status == 'CANCEL' %}
+                                <span class="text-red-500">Canceled</span>
+                            {% else %}
+                                <span class="text-blue-500">Borrowed</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center py-4">No borrowed books found.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</main>
+{% endblock %}
